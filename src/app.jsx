@@ -13,7 +13,7 @@ export default function App() {
 
           <a href="/">Index</a>
           <a href="/about">About</a>
-          <a href="/task/hi">Task</a>
+          <a href="/task/Programming">Task</a>
           <Suspense>{props.children}</Suspense>
         </MetaProvider>
       )}

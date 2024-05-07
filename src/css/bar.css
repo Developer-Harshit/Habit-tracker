@@ -1,0 +1,30 @@
+#heading {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #d8d8d8;
+  height: max-content;
+}
+.progress {
+  height: 100%;
+  width: 0;
+
+  background: linear-gradient(to left, #f2709c, #ff9472);
+  transition: 1s ease-in-out;
+  font-size: 16px;
+  padding: 0.8rem 0;
+}
+.progress div {
+  opacity: 0;
+}
+.progress,
+#heading h1 {
+  margin: 0;
+}
+
+#heading h1 {
+  background-color: black;
+  font-size: 16px;
+  color: white;
+  padding: 0.8rem 0.5rem;
+}
