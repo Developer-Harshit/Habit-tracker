@@ -17,6 +17,7 @@ netlify
 # lock files
 bun.lockb
 yarn.lock
+pnpm-lock.yaml
 
 # IDEs and editors
 /.idea

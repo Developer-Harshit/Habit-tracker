@@ -1,3 +1,3 @@
-import NotFound from "~/components/NotFound";
+import fourOfour from "~/components/NotFound";
 
-export default NotFound;
+export default fourOfour;

@@ -15,7 +15,6 @@ function upgradeDB() {
     db.createObjectStore(habitsList, { keyPath: "name" });
   }
   if (!db.objectStoreNames.contains(this.storeName)) {
-    console.log("calling upgrade");
     db.createObjectStore(this.storeName, { keyPath: "id" });
   }
 }

@@ -4,6 +4,7 @@ export default function Home() {
   return (
     <main>
       <Title>My task manager</Title>
+      <p>Yo</p>
     </main>
   );
 }

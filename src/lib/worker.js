@@ -4,7 +4,6 @@ onmessage = function (e) {
   // add data
   //   test();
   const { type, payload, storeName } = e.data;
-  console.log("mystorename->", storeName);
 
   new Promise((resolve, reject) => {
     const onerror = function (e) {
@@ -30,7 +29,6 @@ onmessage = function (e) {
         verifyStore(storeName, resolve, onerror);
         break;
       case "fetchData":
-        console.log("calling getAll");
         getAll(storeName, resolve, onerror);
         break;
     }
