@@ -1,0 +1,45 @@
+/* Form Styles  */
+/* .formSect {
+  
+  
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.503);
+  display: none;
+} */
+
+.formSect {
+  display: flex;
+  width: max-content;
+  flex-direction: column;
+}
+.formSect aside + button {
+  width: -webkit-fill-available;
+}
+.formWrapper {
+  padding: 3rem;
+  background-color: beige;
+  text-align: center;
+}
+.form ul {
+  padding: 0;
+  list-style: none;
+
+  text-align: left;
+}
+.form li label {
+  font-size: 1rem;
+
+  display: block;
+}
+
+.btnDiv {
+  text-align: left;
+}
+.btnDiv button {
+  margin: 0 0.1rem;
+  padding: 0.1rem 0.2rem;
+}

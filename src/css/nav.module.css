@@ -1,0 +1,53 @@
+/* header  */
+
+.navBar {
+  background-color: aliceblue;
+
+  top: 0;
+
+  z-index: 100;
+  padding: 10px 8px;
+}
+
+.navWrapper,
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-end;
+  align-content: space-around;
+}
+.navWrapper {
+  justify-content: space-between;
+  margin: auto;
+  text-align: center;
+  width: 55%;
+}
+
+.logo {
+  margin-left: 30px;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.menu {
+  list-style: none;
+  margin-right: 30px;
+  gap: 10px;
+}
+.navBar a {
+  text-decoration: none;
+}
+.menu li a {
+  display: block;
+  font-size: 0.7rem;
+  position: relative;
+  text-transform: uppercase;
+}
+
+@media (max-width: 638px) {
+  .navWrapper {
+    width: 100%;
+    padding: 0;
+  }
+}
