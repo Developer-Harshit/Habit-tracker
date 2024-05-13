@@ -3,15 +3,15 @@ import { useParams } from "@solidjs/router";
 import NotFound from "~/components/NotFound";
 import { createSignal, batch, For, onMount, Switch, Match, createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
-import formCss from "../../css/form.module.css";
-import taskCss from "../../css/task.module.css";
+import formCss from "~/css/form.module.css";
+import taskCss from "~/css/task.module.css";
 import Loading from "~/components/Loading";
 
 function removeItem(array, index) {
   return [...array.slice(0, index), ...array.slice(index + 1)];
 }
 
-export default function Habit() {
+export default function Todo() {
   const params = useParams();
 
   const [storeName, setStoreName] = createSignal(params.id);
@@ -54,7 +54,7 @@ export default function Habit() {
     }
   };
   const initWorker = () => {
-    worker = new Worker(new URL("../../lib/worker.js", import.meta.url), {
+    worker = new Worker(new URL("../lib/worker.js", import.meta.url), {
       type: "module"
     });
     worker.onmessage = recieveWork;
@@ -63,7 +63,6 @@ export default function Habit() {
 
   onMount(() => {
     initWorker();
-    setTimeout(() => {}, 1000);
   });
 
   const addTask = e => {
