@@ -5,8 +5,8 @@ const indexedDB =
   self.msIndexedDB ||
   self.shimIndexedDB;
 
-const dbName = "habit-tracker";
-const habitsList = "HabitsList";
+const dbName = "habit-tracker-system-db";
+const habitsList = "habit-list-system-store";
 
 function upgradeDB() {
   let db = this.result; //let Db = e.target.result;
@@ -20,18 +20,42 @@ function upgradeDB() {
 }
 
 function verifyStore(storeName, resolve, onerror) {
-  let request = indexedDB.open(dbName);
-  request.storeName = habitsList;
-  request.onerror = onerror;
-  /////////////////////////////////////////
-  request.onsuccess = function (e) {
-    let db = this.result;
-    const doesStoreExit = storeName === habitsList || !db.objectStoreNames.contains(storeName);
-    if (doesStoreExit) resolve(false);
-    else resolve(true);
-    db.close();
-  };
-  /////////////////////////////////////////
+  _connectDB(
+    habitsList,
+    function (store) {
+      /////////////////////////////////////////
+      let rows = [];
+      if (store.getAllKeys && false) {
+        /////////////////////////////////////////
+        let req = store.getAllKeys();
+        req.onerror = onerror;
+        req.onsuccess = function () {
+          console.log("my keys", this.result);
+          console.log(this.result.includes(storeName));
+          resolve(this.result.includes(storeName));
+        };
+        /////////////////////////////////////////
+      } else {
+        /////////////////////////////////////////
+
+        let req = store.openCursor();
+        req.onerror = onerror;
+        req.onsuccess = function (e) {
+          let cursor = e.target.result;
+          if (cursor) {
+            rows.push(cursor.value.name);
+            cursor.continue();
+          } else {
+            console.log("res", rows.includes(storeName), rows);
+            resolve(rows.includes(storeName));
+          }
+        };
+        /////////////////////////////////////////
+      }
+      /////////////////////////////////////////
+    },
+    onerror
+  );
 }
 function _connectDB(storeName, callback, onerror, txMode = "readwrite") {
   /////////////////////////////////////////

@@ -1,21 +1,16 @@
 import { Title } from "@solidjs/meta";
-import { useParams } from "@solidjs/router";
+import { A, useHref, useParams } from "@solidjs/router";
 import NotFound from "~/components/NotFound";
 import { createSignal, batch, For, onMount, Switch, Match, createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
 import formCss from "~/css/form.module.css";
 import taskCss from "~/css/task.module.css";
 import Loading from "~/components/Loading";
-
-function removeItem(array, index) {
-  return [...array.slice(0, index), ...array.slice(index + 1)];
-}
+import { removeItem } from "~/lib/utils";
 
 export default function Todo() {
   const params = useParams();
-
   const [storeName, setStoreName] = createSignal(params.id);
-
   const [state, setState] = createSignal("loading");
   const [newText, setText] = createSignal("");
   const [newRepeat, setRepeat] = createSignal(false);
@@ -25,6 +20,7 @@ export default function Todo() {
   createEffect(() => {
     console.log("ID CHANGED ->", params.id);
     setStoreName(params.id);
+    console.log(params.id);
     pushWork("verify");
     setState("loading");
   });
@@ -43,13 +39,13 @@ export default function Todo() {
       setTasks(result);
       setState("ready");
     } else if (type == "verify") {
-      pushWork("fetchData");
+      //   pushWork("fetchData");
       ////////////////////
-      /**
-       // do this to avoid creating non existing stores
+      console.log("verify,res", result);
+      // do this to avoid creating non existing stores
       if (result) pushWork("fetchData");
       else setState("404");
-      */
+
       /////////////////////
     }
   };
@@ -58,6 +54,7 @@ export default function Todo() {
       type: "module"
     });
     worker.onmessage = recieveWork;
+    console.log(params.id);
     pushWork("verify");
   };
 
@@ -92,6 +89,7 @@ export default function Todo() {
     const { text, done, id, start, duration, repeat } = tasks[idx];
     pushWork("up", { text, done, id, start, duration, repeat });
   };
+
   const deleteTask = idx => {
     const id = tasks[idx].id;
     setTasks(t => removeItem(t, idx));
@@ -104,7 +102,7 @@ export default function Todo() {
         <Title>Tasks</Title>
         <main id="task-app">
           <section>
-            <div id="heading">
+            <div id="heading" name="heading">
               <h1>{params.id}</h1>
               <div class="progress">
                 <div>{params.id}</div>

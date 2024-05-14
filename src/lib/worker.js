@@ -31,6 +31,10 @@ onmessage = function (e) {
       case "fetchData":
         getAll(storeName, resolve, onerror);
         break;
+      case "modifyTodo":
+        getAll(storeName, resolve, onerror);
+        // do smth
+        break;
     }
   })
 
