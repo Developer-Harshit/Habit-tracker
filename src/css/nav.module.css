@@ -1,12 +1,9 @@
 /* header  */
 
 .navBar {
-  background-color: aliceblue;
+  /* background-color: rgb(44, 27, 35); */
 
-  top: 0;
-
-  z-index: 100;
-  padding: 10px 8px;
+  padding: 10px 0px;
 }
 
 .navWrapper,
@@ -21,33 +18,29 @@
   justify-content: space-between;
   margin: auto;
   text-align: center;
-  width: 55%;
+
+  width: 100%;
 }
 
 .logo {
-  margin-left: 30px;
   font-size: 24px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 .menu {
   list-style: none;
-  margin-right: 30px;
+
   gap: 10px;
 }
-.navBar a {
-  text-decoration: none;
-}
-.menu li a {
-  display: block;
-  font-size: 0.7rem;
-  position: relative;
-  text-transform: uppercase;
-}
 
-@media (max-width: 638px) {
-  .navWrapper {
-    width: 100%;
+@media (min-width: 720px) {
+  .navBar {
     padding: 0;
+  }
+  .menu {
+    margin: 0;
+  }
+  .logo {
+    margin: 0;
   }
 }

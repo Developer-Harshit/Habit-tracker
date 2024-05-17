@@ -17,7 +17,7 @@ const routerRoot = props => (
         <nav class={navClasses.navBar}>
           <div class={navClasses.navWrapper}>
             <div class={navClasses.logo}>
-              <A href="/">
+              <A href="/" class="btn2">
                 <span class="material-symbols-outlined icon"> spa </span>
                 Logo
               </A>
@@ -25,10 +25,14 @@ const routerRoot = props => (
 
             <ul class={navClasses.menu}>
               <li>
-                <A href="/">Home</A>
+                <A class="btn2" href="/">
+                  Home
+                </A>
               </li>
               <li>
-                <A href="/habits">My Habits</A>
+                <A class="btn2" href="/habits">
+                  My Habits
+                </A>
               </li>
             </ul>
           </div>
@@ -37,7 +41,9 @@ const routerRoot = props => (
       {props.children}
       <footer>
         Website developed by
-        <a href="/"> Harshit </a>
+        <a class="btn2" href="/">
+          Harshit
+        </a>
       </footer>
     </Suspense>
   </MetaProvider>

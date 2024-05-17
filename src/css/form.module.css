@@ -1,45 +1,57 @@
 /* Form Styles  */
-/* .formSect {
-  
-  
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.503);
-  display: none;
-} */
-
-.formSect {
-  display: flex;
-  width: max-content;
-  flex-direction: column;
-}
-.formSect aside + button {
-  width: -webkit-fill-available;
-}
-.formWrapper {
-  padding: 3rem;
-  background-color: beige;
-  text-align: center;
+.form {
+  text-align: left;
+  background-color: var(--bg2);
+  color: var(--text2);
+  padding: 1rem;
 }
 .form ul {
-  padding: 0;
   list-style: none;
-
-  text-align: left;
+}
+.form li {
+  margin-bottom: 1rem;
 }
 .form li label {
   font-size: 1rem;
-
   display: block;
+  color: var(--primary);
+}
+.form input {
+  padding: 0.5rem 1rem;
+  margin-top: 8px;
+  background-color: #2b2121;
+  color: #f7f7f7;
+}
+.form input:focus {
+  outline: none;
+  background-color: var(--primary);
+  color: #121212;
 }
 
+.form label,
+.form input {
+  margin-right: 8px;
+}
 .btnDiv {
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
 }
 .btnDiv button {
   margin: 0 0.1rem;
-  padding: 0.1rem 0.2rem;
+}
+
+.popup {
+  background-color: var(--bg2);
+  margin-top: 1rem;
+
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.popup button {
+  padding: 0.5rem;
+  background-color: var(--accent);
+  border-radius: 50%;
 }

@@ -4,9 +4,12 @@ import { For, Show, batch, createSignal, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 import Loading from "~/components/Loading";
 import { removeItem } from "~/lib/utils";
+import formCss from "~/css/form.module.css";
+import { ColorInput, TextInput } from "~/components/Form";
 export default function HabitsPage() {
   const [habits, setHabits] = createStore([]);
   const [state, setState] = createSignal("loading");
+  const [showAdd, setShowAdd] = createSignal(false);
   const storeName = "habit-list-system-store";
   let worker;
   const initWorker = () => {
@@ -24,6 +27,7 @@ export default function HabitsPage() {
     if (type == "fetchData") {
       setHabits(result);
       console.log("my habits", result);
+
       setState("ready");
     }
   };
@@ -61,25 +65,47 @@ export default function HabitsPage() {
       <main>
         <Title>My Habits</Title>
         <h2>My Habits</h2>
-        <form onSubmit={addHabit}>
-          <input
-            type="color"
-            name="habitColor"
-            id="habitColor"
-            value={newColor()}
-            onInput={e => setColor(e.currentTarget.value)}
-            required
-          />
-          <input
-            type="text"
-            name="habitName"
-            id="habitName"
-            value={newText()}
-            onInput={e => setText(e.currentTarget.value)}
-            required
-          />
-          <button>Add</button>
-        </form>
+        <section>
+          <Show
+            fallback={
+              <button
+                class="btn1"
+                onClick={() => {
+                  setShowAdd(true);
+                }}
+              >
+                Add Habits
+              </button>
+            }
+            when={showAdd()}
+          >
+            <form onSubmit={addHabit} class={formCss.form}>
+              <ul>
+                <TextInput
+                  required={true}
+                  name="Habit name"
+                  value={newText}
+                  setValue={setText}
+                ></TextInput>
+                <ColorInput
+                  required={true}
+                  name="Label color"
+                  value={newColor}
+                  setValue={setColor}
+                ></ColorInput>
+              </ul>
+              <div class={formCss.btnDiv}>
+                <span>
+                  <button class="btn1">Add</button>
+                  <button class="btn1" type="reset">
+                    Clear
+                  </button>
+                </span>
+              </div>
+            </form>
+          </Show>
+        </section>
+
         <For each={habits}>
           {(habit, i) => (
             <div>

@@ -1,12 +1,15 @@
 import { Title } from "@solidjs/meta";
 import { A, useHref, useParams } from "@solidjs/router";
 import NotFound from "~/components/NotFound";
-import { createSignal, batch, For, onMount, Switch, Match, createEffect } from "solid-js";
+import { createSignal, batch, For, onMount, Switch, Match, createEffect, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import formCss from "~/css/form.module.css";
 import taskCss from "~/css/task.module.css";
+
 import Loading from "~/components/Loading";
-import { removeItem } from "~/lib/utils";
+import { generateID, parseMS, removeItem } from "~/lib/utils";
+import ProgressBar from "~/components/ProgressBar";
+import { TextInput, NumberInput, ColorInput, Checkbox, SwitchInput } from "~/components/Form";
 
 export default function Todo() {
   const params = useParams();
@@ -16,6 +19,8 @@ export default function Todo() {
   const [newRepeat, setRepeat] = createSignal(false);
   const [newDuration, setDuration] = createSignal(1);
   const [tasks, setTasks] = createStore([]);
+  const [bar, setbar] = createSignal(1);
+  const [showAdd, setShowAdd] = createSignal(false);
 
   createEffect(() => {
     console.log("ID CHANGED ->", params.id);
@@ -37,7 +42,9 @@ export default function Todo() {
     // console.log("work done | type->", type);
     if (type == "fetchData") {
       setTasks(result);
+
       setState("ready");
+      setTimeout(() => setbar(0.2), 100);
     } else if (type == "verify") {
       //   pushWork("fetchData");
       ////////////////////
@@ -58,21 +65,17 @@ export default function Todo() {
     pushWork("verify");
   };
 
-  onMount(() => {
-    initWorker();
-  });
-
   const addTask = e => {
     e.preventDefault();
     batch(() => {
-      const date = new Date();
-      date.setHours(0, 0, 0, 0);
+      const date = Date.now();
+
       const newTask = {
         text: newText(),
         done: false,
 
-        id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
-        start: date[Symbol.toPrimitive]("number"),
+        id: generateID(),
+        start: date,
         duration: 86400000 * newDuration(),
         repeat: newRepeat()
       };
@@ -81,10 +84,11 @@ export default function Todo() {
       setText("");
       setDuration(1);
       setRepeat(false);
+      setShowAdd(false);
     });
   };
-  const toggleTask = (idx, value) => {
-    setTasks(idx, "done", value);
+  const updateTask = (idx, prop, value) => {
+    setTasks(idx, prop, value);
     JSON.parse(JSON.stringify(tasks[idx]));
     const { text, done, id, start, duration, repeat } = tasks[idx];
     pushWork("up", { text, done, id, start, duration, repeat });
@@ -95,6 +99,9 @@ export default function Todo() {
     setTasks(t => removeItem(t, idx));
     pushWork("del", id);
   };
+  onMount(() => {
+    initWorker();
+  });
 
   return (
     <Switch fallback={<Loading></Loading>}>
@@ -102,95 +109,94 @@ export default function Todo() {
         <Title>Tasks</Title>
         <main id="task-app">
           <section>
-            <div id="heading" name="heading">
-              <h1>{params.id}</h1>
-              <div class="progress">
-                <div>{params.id}</div>
-              </div>
-            </div>
-          </section>
-
-          <section class={formCss.formSecr}>
-            <button>
-              <span class="material-symbols-outlined icon"> add </span>
-              Add Tasks
-            </button>
-
-            <aside>
-              <form onSubmit={addTask} class={formCss.form}>
-                <div class={formCss.formWrapper}>
-                  <ul>
-                    <li>
-                      <label htmlFor="textInput">text</label>
-                      <input
-                        placeholder="enter todo and click +"
-                        required
-                        value={newText()}
-                        onInput={e => setText(e.currentTarget.value)}
-                        id="textInput"
-                      />
-                    </li>
-                    <li>
-                      <label htmlFor="durationInput">duration</label>
-                      <input
-                        type="number"
-                        id="durationInput"
-                        value={newDuration()}
-                        onInput={e => {
-                          setDuration(+e.currentTarget.value);
-                        }}
-                      />
-                    </li>
-                    <li>
-                      <label htmlFor="repeatCheckbox">repeat</label>
-                      <input
-                        value={newRepeat()}
-                        onChange={e => setRepeat(e.currentTarget.checked)}
-                        id="repeatCheckbox"
-                        type="checkbox"
-                      />
-                    </li>
-                  </ul>
-                  <div class={formCss.btnDiv}>
-                    <button>
-                      <span class="material-symbols-outlined icon"> check </span>
-                    </button>
-                    <button type="reset">
-                      <span class="material-symbols-outlined icon"> close </span>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </aside>
+            <h1>{params.id}</h1>
           </section>
 
           <section>
+            <div class={formCss.popup}>
+              <p>Tasks done : 50 </p>
+              <button
+                onClick={() => {
+                  setShowAdd(!showAdd());
+                }}
+                class="material-symbols-outlined icon"
+              >
+                add
+              </button>
+              <p>Tasks failed : 50 </p>
+            </div>
+            <Show when={showAdd()}>
+              <form onSubmit={addTask} class={formCss.form} id="myform">
+                <ul>
+                  <TextInput
+                    required={true}
+                    name="Text"
+                    value={newText}
+                    setValue={setText}
+                  ></TextInput>
+                  <NumberInput
+                    name="Duration (in days)"
+                    value={newDuration}
+                    setValue={setDuration}
+                  ></NumberInput>
+                  <li>
+                    <Checkbox name="Repeat" value={newRepeat} setValue={setRepeat}></Checkbox>
+                  </li>
+                </ul>
+                <div class={formCss.btnDiv}>
+                  <span>
+                    <button class="btn1">Add</button>
+                    <button class="btn1" type="reset">
+                      Clear
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </Show>
+          </section>
+
+          <section>
+            <h2>Todos</h2>
             <ul class={taskCss.tasks}>
               <For each={tasks}>
-                {(task, i) => (
-                  <li>
-                    <div class={taskCss.item}>
-                      <input
-                        type="checkbox"
-                        checked={task.done}
-                        onChange={e => toggleTask(i(), e.currentTarget.checked)}
-                        name={`${task.text}taskdone`}
-                      />
+                {(task, i) => {
+                  const taskRepeat = () => task.repeat;
+                  const setTaskRepeat = value => {
+                    updateTask(i(), "repeat", value);
+                  };
+                  const taskDone = () => task.done;
+                  const setTaskDone = value => {
+                    updateTask(i(), "done", value);
+                  };
+                  const timeLeft = parseMS(task.duration - (Date.now() - task.start));
+                  const barPercent = 1 - (Date.now() - task.start) / task.duration;
+                  return (
+                    <li>
+                      <div class={taskCss.item}>
+                        <Checkbox
+                          name={`${task.text}`}
+                          value={taskDone}
+                          setValue={setTaskDone}
+                        ></Checkbox>
 
-                      <span>{task.text}</span>
-                      <button onClick={() => deleteTask(i())}>
-                        <span class="material-symbols-outlined icon"> delete </span>
-                      </button>
-                    </div>
-                    <div class={taskCss.info}>
-                      <div></div>
-                      <span>
-                        Repeat <button>on</button>
-                      </span>
-                      <span>2min left</span>
-                    </div>
-                  </li>
-                )}
+                        <button class="btn1" onClick={() => deleteTask(i())}>
+                          <span class="material-symbols-outlined icon"> delete </span>
+                        </button>
+                      </div>
+                      <div class={taskCss.info}>
+                        <ProgressBar bSize={barPercent}></ProgressBar>
+
+                        <SwitchInput
+                          name="Repeat"
+                          value={taskRepeat}
+                          setValue={setTaskRepeat}
+                        ></SwitchInput>
+
+                        <span>{timeLeft} left</span>
+                      </div>
+                    </li>
+                  );
+                }}
               </For>
             </ul>
           </section>
