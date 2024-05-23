@@ -1,23 +1,22 @@
 /* Form Styles  */
 .form {
   text-align: left;
-  background-color: var(--bg2);
+  background-color: var(--bg3);
   color: var(--text2);
-  padding: 1rem;
+  padding: 10px;
 }
 .form ul {
   list-style: none;
 }
 .form li {
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 .form li label {
-  font-size: 1rem;
   display: block;
   color: var(--primary);
 }
 .form input {
-  padding: 0.5rem 1rem;
+  padding: 8px 10px;
   margin-top: 8px;
   background-color: #2b2121;
   color: #f7f7f7;
@@ -27,7 +26,15 @@
   background-color: var(--primary);
   color: #121212;
 }
-
+.form input[type="color"] {
+  padding: 0;
+}
+.form input {
+  min-width: 300px;
+}
+.form input[type="checkbox"] {
+  min-width: auto;
+}
 .form label,
 .form input {
   margin-right: 8px;
@@ -37,21 +44,28 @@
   justify-content: space-between;
 }
 .btnDiv button {
-  margin: 0 0.1rem;
+  margin: 0 2px;
 }
 
 .popup {
   background-color: var(--bg2);
-  margin-top: 1rem;
+  margin-top: 10px;
 
-  padding: 1rem;
+  padding: 10px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .popup button {
-  padding: 0.5rem;
+  padding: 6px;
   background-color: var(--accent);
+  border: 2px solid var(--text);
+  border-radius: 50%;
+}
+.popup button:hover {
+  padding: 6px;
+  color: var(--accent);
+  background-color: var(--bg);
   border-radius: 50%;
 }

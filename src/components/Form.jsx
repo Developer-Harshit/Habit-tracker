@@ -1,17 +1,19 @@
+import { isValidHex } from "~/lib/utils";
+import optionCss from "~/css/option.module.css";
+import { Show, createSignal } from "solid-js";
 export function TextInput(props) {
-  const id = props.name.replaceAll(" ", "");
   const max = 50;
   return (
     <li>
-      <label htmlFor={id}>{props.name}</label>
+      <label htmlFor={props.id}>{props.name}</label>
       <input
         required={props.required}
         value={props.value()}
         onInput={e => props.setValue(e.target.value)}
-        id={id}
+        id={props.id}
         maxlength={50}
       />
-      <span>
+      <span class="text4">
         {props.value().length}/{max}
       </span>
     </li>
@@ -19,42 +21,90 @@ export function TextInput(props) {
 }
 
 export function NumberInput(props) {
-  const id = props.name.replaceAll(" ", "");
   return (
     <li>
-      <label htmlFor={id}>{props.name}</label>
+      <label htmlFor={props.id}>{props.name}</label>
       <input
         type="number"
         required={props.required}
         value={props.value()}
         onInput={e => props.setValue(e.target.value)}
-        id={id}
+        id={props.id}
         min="1"
       />
-      <span>days</span>
+      <span class="text4">days</span>
+    </li>
+  );
+}
+
+export function OptionsInput(props) {
+  const [isVisible, setVisible] = createSignal(false);
+
+  return (
+    <li>
+      <label htmlFor={props.id}>{props.name}</label>
+      <input
+        type="text"
+        style={"display:none"}
+        id={props.id}
+        value={props.value().color ? props.value().color : ""}
+      />
+      <div class={optionCss.colorSelect}>
+        <span onClick={() => setVisible(!isVisible())}>
+          {props.value().name}
+          <span style={{ "background-color": props.value().color }}></span>
+        </span>
+        <Show when={isVisible()}>
+          <ul>
+            <For each={props.items}>
+              {(item, i) => (
+                <li
+                  style={{ "background-color": item.color }}
+                  onClick={e => {
+                    props.setValue(item);
+                    setVisible(false);
+                  }}
+                >
+                  <span>{item.name}</span>
+                </li>
+              )}
+            </For>
+          </ul>
+        </Show>
+      </div>
     </li>
   );
 }
 
 export function ColorInput(props) {
-  const id = props.name.replaceAll(" ", "");
   return (
     <li>
-      <label htmlFor={id}>{props.name}</label>
+      <label htmlFor={props.id}>{props.name}</label>
       <input
-        onInput={e => props.setValue(e.target.value)}
+        onInput={e => {
+          console.log(e);
+          props.setValue(e.target.value);
+        }}
         required={props.required}
         value={props.value()}
         type="color"
-        id={id}
+        id={props.id}
       />
-      <input type="text" value={props.value()} onInput={e => props.setValue(e.target.value)} />
+      <input
+        type="text"
+        required
+        value={props.value()}
+        onChange={e => {
+          let val = e.target.value;
+          if (!isValidHex(val)) val = "";
+          props.setValue(val);
+        }}
+      />
     </li>
   );
 }
 
 export function Checkbox(props) {
-  const id = props.name.replaceAll(" ", "");
   return (
     <>
       <input
@@ -62,9 +112,9 @@ export function Checkbox(props) {
         type="checkbox"
         checked={props.value()}
         onChange={e => props.setValue(e.target.checked)}
-        id={id}
+        id={props.id}
       />
-      <label style="display:inline;margin-left:8px" htmlFor={id}>
+      <label style="display:inline;margin-left:8px" htmlFor={props.id}>
         {props.name}
       </label>
     </>
@@ -74,7 +124,11 @@ export function Checkbox(props) {
 export function SwitchInput(props) {
   return (
     <span class="tickInput">
-      <label style={{ display: "inline", "margin-right": " 8px" }}>{props.name}</label>
+      <label htmlFor={props.id} style={{ display: "inline", "margin-right": " 8px" }}>
+        {props.name}
+      </label>
+
+      <input type="text" style={"display:none"} id={props.id} value={props.value()} />
       <span>
         <button
           classList={{ active: props.value(), btn3: true }}

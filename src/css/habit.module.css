@@ -1,0 +1,31 @@
+.habit {
+  list-style: none;
+}
+.habit .item {
+  margin: 16px 0;
+}
+.ball {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid #121212;
+  transition: transform 0.2s ease-in-out;
+}
+.ball:hover {
+  transform: scale(1.5);
+}
+.item {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg3);
+  padding: 10px;
+}
+
+.label {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 0 10px;
+}
+.deleteBtn {
+  margin-left: auto;
+}

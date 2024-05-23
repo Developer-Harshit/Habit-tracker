@@ -1,4 +1,4 @@
-import { MetaProvider, Title } from "@solidjs/meta";
+import { MetaProvider, Title, Link } from "@solidjs/meta";
 import { A, Router, Route } from "@solidjs/router";
 import { Suspense, lazy } from "solid-js";
 import Habits from "~/pages/habits.jsx";
@@ -6,11 +6,14 @@ import Todos from "~/pages/todos.jsx";
 import Home from "~/pages/home.jsx";
 import fourOfour from "~/pages/404.jsx";
 import navClasses from "~/css/nav.module.css";
-import "./global.css";
+import "./css/globals/base.css";
+import "./css/globals/btn.css";
+import "./css/globals/fonts.css";
+import "./css/globals/scroll.css";
 
 const routerRoot = props => (
   <MetaProvider>
-    <Title>My App</Title>
+    <Title>Habit Tracker</Title>
 
     <Suspense>
       <header>

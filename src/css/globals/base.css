@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Mono", monospace;
+  word-wrap: break-word;
+}
+:root {
+  --text: #f7f7f7;
+  --text2: #f7f7f7cc;
+  --text3: #f7f7f799;
+  --text4: #f7f7f766;
+
+  --bg: #271f21;
+  --bg2: rgba(32, 36, 35, 0.621);
+  --bg3: rgba(19, 17, 17, 0.679);
+  --primary: #cdfaf1;
+  --accent: #ec748c;
+  --white-shadow: 0px 0px 100px #ffffff2d;
+
+  color: var(--text);
+
+  background-image: url("/bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-color: #000000f0;
+
+  min-height: 100svh;
+}
+.text1 {
+  color: var(--text);
+}
+.text2 {
+  color: var(--text2);
+}
+.text3 {
+  color: var(--text3);
+}
+.text4 {
+  color: var(--text4);
+}
+.text1,
+h1,
+.logo {
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+.text2,
+h2 {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+.text3,
+h3,
+h4,
+h5,
+p,
+div,
+button,
+a {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.text4,
+label,
+span {
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+main,
+footer,
+header {
+  max-width: 720px;
+  margin: auto;
+  padding: 10px;
+}
+main section,
+h1 {
+  margin: 40px 0;
+  padding: 10px;
+}
+
+h1 {
+  color: var(--text);
+}
+h2 {
+  margin-top: 14px;
+  padding: 8px 0;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--primary);
+}
+
+section {
+  border: 1px solid #ffffff43;
+  box-shadow: var(--white-shadow);
+}

@@ -11,12 +11,11 @@ const habitsList = "habit-list-system-store";
 function upgradeDB() {
   let db = this.result; //let Db = e.target.result;
 
-  if (!db.objectStoreNames.contains(habitsList)) {
-    db.createObjectStore(habitsList, { keyPath: "name" });
-  }
-  if (!db.objectStoreNames.contains(this.storeName)) {
+  if (!db.objectStoreNames.contains(habitsList))
+    db.createObjectStore(habitsList, { keyPath: "id" });
+
+  if (!db.objectStoreNames.contains(this.storeName))
     db.createObjectStore(this.storeName, { keyPath: "id" });
-  }
 }
 
 function verifyStore(storeName, resolve, onerror) {
@@ -25,7 +24,7 @@ function verifyStore(storeName, resolve, onerror) {
     function (store) {
       /////////////////////////////////////////
       let rows = [];
-      if (store.getAllKeys && false) {
+      if (store.getAllKeys) {
         /////////////////////////////////////////
         let req = store.getAllKeys();
         req.onerror = onerror;

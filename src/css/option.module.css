@@ -1,0 +1,57 @@
+.colorSelect {
+  border: 2px solid #3e3e3e;
+  padding: 10px;
+  max-width: 300px;
+}
+.colorSelect > span {
+  text-transform: uppercase;
+  padding: 8px 0;
+  display: block;
+  cursor: pointer;
+}
+.colorSelect > span span {
+  margin-top: -8px;
+}
+.colorSelect ul {
+  width: 100%;
+  overflow: visible;
+  padding: 0;
+  border-top: 1px solid #3e3e3e;
+}
+.colorSelect ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.colorSelect ul li,
+.colorSelect > span span {
+  list-style: none;
+  width: 15px;
+  height: 15px;
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+  float: left;
+  margin: 0 12px;
+  cursor: pointer;
+  position: relative;
+}
+
+.colorSelect ul li {
+  margin-top: 25px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.colorSelect ul li span {
+  display: none;
+}
+.colorSelect ul li:hover {
+  -webkit-transform: scale(1.15);
+  -moz-transform: scale(1.15);
+  -ms-transform: scale(1.15);
+  -o-transform: scale(1.15);
+  transform: scale(1.15);
+}

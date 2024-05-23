@@ -1,0 +1,38 @@
+.btn1,
+.btn2,
+.btn3 {
+  transition: all 0.1s ease-in-out;
+  padding: 2px 6px;
+  text-decoration: none;
+  border: none;
+}
+.btn1 {
+  border: 1px solid var(--text4);
+  color: #121212e0;
+  background-color: var(--primary);
+}
+.btn1:hover {
+  color: var(--primary);
+  background-color: #121212e0;
+}
+.btn2 {
+  color: var(--accent);
+}
+.btn2:hover {
+  background-color: var(--accent);
+  color: #121212e0;
+}
+
+.btn3.active,
+.btn3.active:hover {
+  background-color: #121212e0;
+  color: var(--text);
+}
+.btn3 {
+  background-color: transparent;
+  color: #121212e0;
+}
+.btn3:hover {
+  background-color: #121212b3;
+  color: var(--text);
+}
