@@ -13,19 +13,20 @@ import { TextInput, NumberInput, ColorInput, Checkbox, SwitchInput } from "~/com
 
 export default function Todo() {
   const params = useParams();
-  const [storeName, setStoreName] = createSignal(params.id);
+  const [ID, setID] = createSignal(params.id);
+  const [storeData, setStoreData] = createSignal({});
+
   const [state, setState] = createSignal("loading");
   const [newText, setText] = createSignal("");
   const [newRepeat, setRepeat] = createSignal(false);
   const [newDuration, setDuration] = createSignal(1);
   const [tasks, setTasks] = createStore([]);
-  const [bar, setbar] = createSignal(1);
   const [showAdd, setShowAdd] = createSignal(false);
 
   createEffect(() => {
     console.log("ID CHANGED ->", params.id);
-    setStoreName(params.id);
-    pushWork(storeName(), "verify");
+    setID(params.id);
+    pushWork(ID(), "verify");
     setState("loading");
   });
 
@@ -39,16 +40,17 @@ export default function Todo() {
     // console.log("msg recieved:", e.data);
     const { result, type } = e.data;
     // console.log("work done | type->", type);
-    if (type == "fetchData") {
+    if (type == "modifyTask") {
       setTasks(result);
 
       setState("ready");
-      setTimeout(() => setbar(0.2), 100);
     } else if (type == "verify") {
       console.log("verify,res", result);
       // do this to avoid creating non existing stores
-      if (result) pushWork(storeName(), "fetchData");
-      else setState("404");
+      if (result) {
+        pushWork(ID(), "modifyTask", result);
+        setStoreData(result);
+      } else setState("404");
 
       /////////////////////
     }
@@ -59,7 +61,7 @@ export default function Todo() {
     });
     worker.onmessage = recieveWork;
     console.log(params.id);
-    pushWork(storeName(), "verify");
+    pushWork(ID(), "verify");
   };
 
   const addTask = e => {
@@ -68,7 +70,7 @@ export default function Todo() {
       const date = Date.now();
 
       const newTask = {
-        duration: day_in_ms * newDuration(),
+        duration: newDuration() * day_in_ms,
         id: generateID("task"),
         repeat: newRepeat(),
         text: newText(),
@@ -76,7 +78,7 @@ export default function Todo() {
         done: false
       };
       setTasks(tasks.length, newTask);
-      pushWork(storeName(), "add", newTask);
+      pushWork(ID(), "add", newTask);
       setText("");
       setDuration(1);
       setRepeat(false);
@@ -87,13 +89,13 @@ export default function Todo() {
     setTasks(idx, prop, value);
     JSON.parse(JSON.stringify(tasks[idx]));
     const { text, done, id, start, duration, repeat } = tasks[idx];
-    pushWork(storeName(), "up", { text, done, id, start, duration, repeat });
+    pushWork(ID(), "up", { text, done, id, start, duration, repeat });
   };
 
   const deleteTask = idx => {
     const id = tasks[idx].id;
-    setTasks(t => oveItem(t, idx));
-    pushWork(storeName(), "del", id);
+    setTasks(t => removeItem(t, idx));
+    pushWork(ID(), "del", id);
   };
   onMount(() => {
     initWorker();
@@ -104,11 +106,11 @@ export default function Todo() {
       <Match when={state() == "ready"}>
         <Title>Tasks</Title>
         <main id="task-app">
-          <h1>{params.id}</h1>
+          <h1>{storeData().name}</h1>
 
           <section class="shadow">
             <div class={formCss.popup}>
-              <p class="text3">Tasks done : 50 </p>
+              <p class="text3">Tasks done : {storeData().completed} </p>
               <button
                 onClick={() => {
                   setShowAdd(!showAdd());
@@ -117,13 +119,14 @@ export default function Todo() {
               >
                 add
               </button>
-              <p class="text3">Tasks failed : 50 </p>
+              <p class="text3">Tasks failed : {storeData().failed} </p>
             </div>
             <Show when={showAdd()}>
               <form onSubmit={addTask} class={formCss.form} id="myform">
                 <ul>
                   <TextInput
                     required={true}
+                    max={50}
                     id="textinput"
                     name="Text"
                     value={newText}
@@ -172,7 +175,7 @@ export default function Todo() {
                   const timeLeft = parseMS(task.duration - (Date.now() - task.start));
                   const barPercent = 1 - (Date.now() - task.start) / task.duration;
                   return (
-                    <li class="shadow">
+                    <li>
                       <div class={taskCss.item}>
                         <Checkbox
                           id={"done" + task.id}

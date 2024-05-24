@@ -62,10 +62,11 @@ export default function HabitsPage() {
 
   const deleteHabit = idx => {
     if (confirm("Are you sure you want to delete this habit")) {
-      const id = habits[idx].name;
+      const id = habits[idx].id;
       setHabits(t => removeItem(t, idx));
       pushWork(habitStoreName, "del", id);
-      pushWork();
+
+      pushWork(id, "delStore");
     }
   };
 
@@ -77,7 +78,6 @@ export default function HabitsPage() {
 
         <section class="shadow">
           <div class={formCss.popup}>
-            <p>New Habit</p>
             <button
               onClick={() => {
                 setShowAdd(!showAdd());
@@ -94,6 +94,7 @@ export default function HabitsPage() {
                 <TextInput
                   required={true}
                   id="textinput"
+                  max={20}
                   name="Habit name"
                   value={newText}
                   setValue={setText}
@@ -121,11 +122,12 @@ export default function HabitsPage() {
             <For each={habits}>
               {(habit, i) => {
                 return (
-                  <li class={habitCss.item + " shadow"} style={`border-color:  ${habit.color}5e;`}>
-                    <button
+                  <li class={habitCss.item} style={`border-left:2px solid ${habit.color};`}>
+                    <A
+                      href={"/habits/" + habit.id}
                       style={{ "background-color": habit.color }}
                       class={habitCss.ball}
-                    ></button>
+                    ></A>
 
                     <A class={`btn1 ${habitCss.label}`} href={"/habits/" + habit.id}>
                       {habit.name}

@@ -4,13 +4,12 @@ export function removeItem(array, index) {
   return [...array.slice(0, index), ...array.slice(index + 1)];
 }
 
-const second_in_ms = 1000;
-const minute_in_ms = 60000;
-const hour_in_ms = 3600000;
+export const second_in_ms = 1000;
+export const minute_in_ms = 60000;
+export const hour_in_ms = 3600000;
 export const day_in_ms = 86400000;
 
 export function parseMS(time_ms) {
-  console.log(second_in_ms, minute_in_ms, hour_in_ms, day_in_ms, time_ms);
   if (time_ms < second_in_ms) {
     return Math.floor(time_ms) + "ms";
   } else if (time_ms < minute_in_ms) {

@@ -2,7 +2,6 @@ import { isValidHex } from "~/lib/utils";
 import optionCss from "~/css/option.module.css";
 import { Show, createSignal } from "solid-js";
 export function TextInput(props) {
-  const max = 50;
   return (
     <li>
       <label htmlFor={props.id}>{props.name}</label>
@@ -11,10 +10,10 @@ export function TextInput(props) {
         value={props.value()}
         onInput={e => props.setValue(e.target.value)}
         id={props.id}
-        maxlength={50}
+        maxlength={props.max}
       />
       <span class="text4">
-        {props.value().length}/{max}
+        {props.value().length}/{props.max}
       </span>
     </li>
   );
@@ -30,7 +29,7 @@ export function NumberInput(props) {
         value={props.value()}
         onInput={e => props.setValue(e.target.value)}
         id={props.id}
-        min="1"
+        min={1}
       />
       <span class="text4">days</span>
     </li>
